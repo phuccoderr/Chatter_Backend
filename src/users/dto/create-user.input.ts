@@ -1,13 +1,12 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty } from 'class-validator';
 
-@InputType()
 export class CreateUserInput {
-  @Field()
+  @ApiProperty({ description: 'Email user' })
   @IsEmail()
   email: string;
 
-  @Field()
+  @ApiProperty({ description: 'Password user' })
   @IsNotEmpty()
   password: string;
 }

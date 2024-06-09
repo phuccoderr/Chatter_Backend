@@ -1,13 +1,9 @@
-import { CreateUserInput } from './dto/create-user.input';
-import {
-  BadRequestException,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
-import { User, UserDocument } from './entities/user.entity';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { User, UserDocument } from './schema/user.schema';
 import { Model, Types } from 'mongoose';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
+import { CreateUserInput } from './dto/create-user.input';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -16,6 +12,7 @@ export class UsersService {
     @InjectModel(User.name) private userModel: Model<UserDocument>,
     @InjectPinoLogger(UsersService.name) private readonly logger: PinoLogger,
   ) {}
+
   async create(createUserInput: CreateUserInput) {
     const hashPassword = await bcrypt.hash(createUserInput.password, 10);
     createUserInput.password = hashPassword;
@@ -25,7 +22,7 @@ export class UsersService {
       _id: new Types.ObjectId(),
     });
 
-    return await newUser.save();
+    await newUser.save();
   }
 
   async findAll() {

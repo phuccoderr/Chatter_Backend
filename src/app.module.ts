@@ -1,15 +1,14 @@
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
-import { GraphQLModule } from '@nestjs/graphql';
-import { UsersModule } from './users/users.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import Joi from 'joi';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DatabaseModule } from './common/database/database.module';
-import { UsersResolver } from './users/users.resolver';
 import { LoggerModule } from 'nestjs-pino';
 import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
+import { MessagesModule } from './messages/messages.module';
+import { ConversationsModule } from './conversations/conversations.module';
 
 @Module({
   imports: [
@@ -30,18 +29,13 @@ import { AuthModule } from './auth/auth.module';
       }),
       inject: [ConfigService],
     }),
-    GraphQLModule.forRootAsync<ApolloDriverConfig>({
-      driver: ApolloDriver,
-      useFactory: (configService: ConfigService) => ({
-        autoSchemaFile: true,
-      }),
-      imports: [AuthModule],
-    }),
-    DatabaseModule,
     UsersModule,
+    DatabaseModule,
     AuthModule,
+    MessagesModule,
+    ConversationsModule,
   ],
   controllers: [AppController],
-  providers: [AppService, UsersResolver],
+  providers: [AppService],
 })
 export class AppModule {}
