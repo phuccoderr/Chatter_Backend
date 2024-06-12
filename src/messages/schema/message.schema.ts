@@ -7,12 +7,14 @@ export type MessageDocument = HydratedDocument<Message>;
 @Schema({ versionKey: false })
 export class Message extends AbstractEntity {
   @Prop({
+    type: Types.ObjectId,
     ref: 'User',
     required: true,
   })
   senderId: string;
 
   @Prop({
+    type: Types.ObjectId,
     ref: 'User',
     required: true,
   })

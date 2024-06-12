@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { MessagesModule } from './messages/messages.module';
 import { ConversationsModule } from './conversations/conversations.module';
+import { GatewayModule } from './gateway/gateway.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { ConversationsModule } from './conversations/conversations.module';
     AuthModule,
     MessagesModule,
     ConversationsModule,
+    GatewayModule,
   ],
   controllers: [AppController],
   providers: [AppService],

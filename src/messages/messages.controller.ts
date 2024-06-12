@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { MessagesService } from './messages.service';
 import { UserSendMessageInput } from './dto/user-sendMessage.input';
 import { ApiTags } from '@nestjs/swagger';
@@ -8,11 +8,16 @@ import { ApiTags } from '@nestjs/swagger';
 export class MessagesController {
   constructor(private readonly messageService: MessagesService) {}
 
-  @Post('/:id')
-  getMessages(
+  @Post('/send/:id')
+  sendMessage(
     @Param('id') id: string,
     @Body() userSendMessageInput: UserSendMessageInput,
   ) {
     return this.messageService.sendMessage(id, userSendMessageInput);
+  }
+
+  @Get('/:id')
+  getMessages(@Param('id') id: string, @Query('userId') userId: string) {
+    return this.messageService.getMessages(id, userId);
   }
 }

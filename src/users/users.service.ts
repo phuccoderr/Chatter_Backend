@@ -5,6 +5,7 @@ import { Model, Types } from 'mongoose';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { CreateUserInput } from './dto/create-user.input';
 import * as bcrypt from 'bcrypt';
+import { UserResponse } from './interface/user.response';
 
 @Injectable()
 export class UsersService {
@@ -25,8 +26,12 @@ export class UsersService {
     await newUser.save();
   }
 
-  async findAll() {
-    return await this.userModel.find();
+  async findAll(): Promise<UserResponse[]> {
+    const users = await this.userModel.find();
+    return users.map((user) => ({
+      _id: user._id,
+      email: user.email,
+    }));
   }
 
   async verifyUser(email: string, password: string) {

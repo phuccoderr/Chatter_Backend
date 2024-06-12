@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument, Types } from 'mongoose';
+import { HydratedDocument, SchemaTypes, Types } from 'mongoose';
 import { AbstractEntity } from 'src/common/database/abstract.entity';
 
 export type ConversationDocument = HydratedDocument<Conversation>;
@@ -11,10 +11,7 @@ export class Conversation extends AbstractEntity {
   })
   participants: Types.ObjectId[];
 
-  @Prop({
-    ref: 'Message',
-    default: [],
-  })
+  @Prop([{ type: SchemaTypes.ObjectId, ref: 'Message' }])
   messages: Types.ObjectId[];
 
   @Prop({})

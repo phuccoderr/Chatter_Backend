@@ -20,6 +20,14 @@ export class ConversationsService {
     });
   }
 
+  async getConversationByMessage({ senderId, receiverId }: ConversationInput) {
+    return await this.conversationModel
+      .findOne({
+        participants: { $all: [senderId, receiverId] },
+      })
+      .populate('messages', '-_id');
+  }
+
   async createConversation({ senderId, receiverId }: ConversationInput) {
     return await this.conversationModel.create({
       participants: [senderId, receiverId],

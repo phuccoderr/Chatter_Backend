@@ -44,5 +44,14 @@ export class MessagesService {
     await conversation.save();
   }
 
-  getMessages() {}
+  async getMessages(userIdToChat: string, senderId: string) {
+    let conversation = await this.conversationService.getConversationByMessage({
+      senderId,
+      receiverId: userIdToChat,
+    });
+
+    if (!conversation) return [];
+
+    return conversation;
+  }
 }
